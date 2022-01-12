@@ -1,0 +1,17 @@
+prog
+
+var a : int;
+var b : int;
+var c : int;
+var d : int;
+
+begin
+
+a := 1;
+b := 2;
+c := 3;
+d := a + 8;
+
+
+
+end

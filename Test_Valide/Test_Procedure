@@ -1,0 +1,39 @@
+prog
+
+	type petitTableau : tab[0..9] of int;
+	
+	var a : int;
+	var monTableau : petitTableau;
+
+	procedure proc1
+		var b : int;
+		procedure proc2
+			var c : int;
+			procedure proc3
+				var d : int;
+			begin
+				d := 1000;
+			end;
+		begin
+			c := 100;
+			proc3();
+		end;
+	begin
+		b := 10;
+		proc2();
+	end;
+
+begin
+
+	a := 1;
+	monTableau[0] := 2;
+	monTableau[2] := 20;
+	monTableau[4] := 200;
+	monTableau[6] := 2000;
+	monTableau[8] := 20000;
+
+	write("%d %d %d %d %d", monTableau[0], monTableau[2], monTableau[4], monTableau[6], monTableau[8]);
+
+	proc1();
+
+end

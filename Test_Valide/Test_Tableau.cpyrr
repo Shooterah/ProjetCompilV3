@@ -1,0 +1,29 @@
+prog
+
+	type petitTableau : tab[0..10] of int;
+	type grandTableau : tab[0..100] of int;
+
+	type petiteMatrice : tab[0..5, 0..5] of int;
+	type grandeMatrice : tab[0..10, 0..10] of int;
+
+	var monPetitTableau : petitTableau;
+	var monGrandTableau : grandTableau;
+
+	var maPetiteMatrice : petiteMatrice;
+	var maGrandeMatrice : grandeMatrice;
+
+begin
+
+	monPetitTableau[0] := 100;
+	monPetitTableau[10] := 200;
+	monGrandTableau[0] := 300;
+	monGrandTableau[100] := 400;
+	maPetiteMatrice[0, 0] := 500;
+	maPetiteMatrice[5, 5] := 600;
+	maGrandeMatrice[0, 0] := 700;
+
+	write("%d %d", monPetitTableau[10], maPetiteMatrice[5, 5]);
+
+end
+
+

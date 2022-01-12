@@ -1,0 +1,17 @@
+prog
+
+	var x : int;
+	var y : int;
+	var z : int;
+
+begin
+
+	read(x);
+	read(y);
+
+	z := x * y;
+
+	write("%d", z);
+
+end
+

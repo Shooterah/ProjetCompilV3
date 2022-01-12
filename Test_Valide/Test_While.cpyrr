@@ -1,0 +1,23 @@
+prog
+
+var a : int;
+var b : int;
+var c : int;
+var d : int;
+
+begin
+
+	a := 0;
+	b := 0;
+	c := 0;
+	d := 0;
+
+	while(a < 10) do
+	{
+		b := b + 2;
+		c := c + 3;
+		d := d + 4;
+		a := a + 1;
+	};
+
+end

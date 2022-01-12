@@ -1,0 +1,34 @@
+prog
+
+	var a : int;
+
+	type date : struct
+		jour : int;
+		mois : int;
+		annee : int;
+	fstruct;
+
+	type personne : struct
+		numero : int;
+		naissance : date;
+	fstruct;
+
+	var florian : personne;
+	var uneDate : date;
+
+begin
+
+	a := 400;
+
+	florian.naissance.jour := 1;
+	florian.naissance.annee := 1999;
+
+	uneDate.annee := 10000;
+
+	write("%d", a);
+
+	write("%d %d %d", florian.naissance.jour, florian.naissance.annee, uneDate.annee);
+
+end
+
+

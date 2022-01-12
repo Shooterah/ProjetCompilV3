@@ -1,0 +1,24 @@
+prog
+
+	type joeffrey : struct
+		age : int;
+		qi : int;
+	fstruct;
+
+	type joefTab : tab[0..10] of joeffrey;
+
+	var tabJoef : joefTab;
+	
+begin
+
+	tabJoef[0].age := 2;
+	tabJoef[0].qi := 20;
+
+	tabJoef[3].age := 20;
+	tabJoef[3].qi := 160;
+
+	write("%d %d %d %d", tabJoef[0].age, tabJoef[0].qi, tabJoef[3].age, tabJoef[3].qi);
+
+end
+
+

@@ -1,0 +1,24 @@
+prog
+
+	type petitTableau : tab[0..10] of int;
+
+	type strucTab : struct
+		tab1 : petitTableau;
+		tab2 : petitTableau;
+	fstruct;
+
+	var s1 : strucTab;
+	
+
+begin
+
+	s1.tab1[0] := 1;
+	s1.tab1[10] := 10;
+	s1.tab2[0] := 100;
+	s1.tab2[5] := 1000;
+
+	write("%d %d %d %d", s1.tab1[0], s1.tab1[10], s1.tab2[0], s1.tab2[5]);
+
+end
+
+

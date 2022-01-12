@@ -1,0 +1,22 @@
+prog
+
+var a : int;
+var b : int;
+var c : int;
+
+begin
+
+a := 1;
+b := 2;
+c := 3;
+
+write("%d %d %d", a, b, c);
+
+a := 10;
+b := 20;
+c := 30;
+
+write("%d %d %d", a, b, c);
+
+
+end

@@ -1,0 +1,84 @@
+prog
+
+	type renard : tab[1..5] of int;
+
+	type prince : struct
+		roses : renard;
+		planete : int;
+	fstruct;
+
+	var animal : renard;
+	var x : int;
+
+	procedure on
+		procedure ne
+			procedure voit
+				var petit : prince;
+			begin
+				petit.roses[3] := 7;
+			end;
+			procedure bien
+			begin
+				voit();
+			end;
+		begin
+			voit();
+		end;
+		procedure qu
+		begin
+			ne();
+		end;
+		procedure avec
+		begin
+			qu();
+		end;
+		procedure le
+			procedure coeur
+			begin
+				ne();
+			end;
+			procedure l
+			begin
+				avec();
+			end;
+		begin
+			coeur();
+		end;
+		procedure essentiel
+			procedure est
+				var z : int;
+			begin
+				le();
+				z := x;
+			end;
+			procedure invisible
+				var serpent : renard;
+				var y : int;
+				procedure pour
+					procedure les
+					begin
+						le();
+						y := x;
+					end;
+				begin
+					les();
+				end;
+			begin
+				serpent[1] := 99;
+				pour();
+			end;
+		begin
+			invisible();
+		end;
+		procedure yeux
+		begin
+			essentiel();
+		end;
+	begin
+		yeux();
+	end;
+begin
+	animal[1] := 77;
+	x := 5;
+	on();
+end

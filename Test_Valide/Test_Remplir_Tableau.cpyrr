@@ -1,0 +1,18 @@
+prog
+
+	type grandTableau : tab[0..300] of int;
+
+	var monTableau : grandTableau;
+	var a : int;
+
+begin
+
+	a := 0;
+
+	while(a < 250) do{
+		monTableau[a] := a;
+		a := a + 1;
+	};
+
+
+end

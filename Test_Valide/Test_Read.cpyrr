@@ -1,0 +1,16 @@
+prog
+
+var a : int;
+
+begin
+
+a := 1;
+
+write("%d", a);
+
+read(a);
+
+write("%d", a);
+
+
+end

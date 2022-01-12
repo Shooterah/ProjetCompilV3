@@ -1,0 +1,23 @@
+prog
+
+var a : int;
+var b : int;
+var c : int;
+
+begin
+
+a := 1;
+b := 2;
+
+if(a < 2) then{
+		b := 100;
+	}
+	else{
+		b := 1000;
+	}
+endif;
+
+c := 3;
+
+
+end

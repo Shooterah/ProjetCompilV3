@@ -1,0 +1,26 @@
+prog
+
+var a : int;
+var b : int;
+var c : int;
+var d : int;
+
+begin
+
+	a := 0;
+	b := 0;
+	c := 0;
+
+	while(b < 100) do
+	{
+		vide;
+		while(a < 10) do
+		{
+			a := a + 1;
+			c := c + 1;
+		};
+		a := 0;
+		b := b + 1;
+	};
+
+end

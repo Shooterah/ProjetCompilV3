@@ -1,0 +1,2824 @@
+Terminals unused in grammar
+
+    SWITCH
+    FOR
+    CASE
+    VOID
+    MAIN
+    APPEL
+    DEFINE
+    EXIT
+    INCLUDE
+    HASH
+
+
+State 97 conflicts: 5 shift/reduce
+State 98 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: programme $end
+
+    1 $@1: %empty
+
+    2 programme: PROG $@1 corps
+
+    3 corps: liste_declarations liste_instructions
+    4      | liste_instructions
+
+    5 liste_declarations: declaration PV
+    6                   | liste_declarations declaration PV
+
+    7 liste_instructions: DEBUT suite_liste_inst FIN
+    8                   | ACO suite_liste_inst ACF
+
+    9 suite_liste_inst: instruction PV
+   10                 | suite_liste_inst instruction PV
+
+   11 declaration: declaration_type
+   12            | declaration_variable
+   13            | declaration_procedure
+   14            | declaration_fonction
+
+   15 $@2: %empty
+
+   16 declaration_type: TYPE IDF $@2 DEUX_POINTS suite_declaration_type
+
+   17 $@3: %empty
+
+   18 suite_declaration_type: STRUCT $@3 liste_champs PV FSTRUCT
+
+   19 $@4: %empty
+
+   20 $@5: %empty
+
+   21 suite_declaration_type: $@4 TABLEAU $@5 dimension DE nom_type
+
+   22 dimension: CROO liste_dimensions CROF
+
+   23 $@6: %empty
+
+   24 liste_dimensions: $@6 une_dimension
+
+   25 $@7: %empty
+
+   26 liste_dimensions: liste_dimensions VIRGULE $@7 une_dimension
+
+   27 $@8: %empty
+
+   28 $@9: %empty
+
+   29 une_dimension: expression $@8 POINT_POINT expression $@9
+
+   30 liste_champs: un_champ
+   31             | liste_champs PV un_champ
+
+   32 $@10: %empty
+
+   33 un_champ: IDF $@10 DEUX_POINTS nom_type
+
+   34 nom_type: type_simple
+   35         | IDF
+
+   36 type_simple: INT
+   37            | FLOAT
+   38            | BOOL
+   39            | CHAR
+   40            | STRING CROO ENTIER CROF
+
+   41 declaration_variable: VARIABLE IDF DEUX_POINTS nom_type
+
+   42 $@11: %empty
+
+   43 $@12: %empty
+
+   44 declaration_procedure: PROCEDURE IDF $@11 liste_parametres $@12 corps
+
+   45 $@13: %empty
+
+   46 $@14: %empty
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres RETURN type_simple $@14 corps
+
+   48 liste_parametres: %empty
+   49                 | PO liste_param PF
+
+   50 liste_param: un_param
+   51            | liste_param PV un_param
+
+   52 un_param: IDF DEUX_POINTS type_simple
+
+   53 instruction: affectation
+   54            | condition
+   55            | tant_que
+   56            | appel
+   57            | VIDE
+   58            | RETURN resultat_retourne
+   59            | lire
+   60            | ecrire
+
+   61 resultat_retourne: %empty
+   62                  | expression
+
+   63 appel: IDF PO liste_arguments PF
+
+   64 liste_arguments: %empty
+   65                | liste_args
+
+   66 liste_args: un_arg
+   67           | liste_args VIRGULE un_arg
+
+   68 un_arg: expression
+
+   69 condition: IF PO eb1 PF THEN liste_instructions ELSE liste_instructions ENDIF
+
+   70 tant_que: WHILE PO eb1 PF DO liste_instructions
+
+   71 affectation: variable OPAFF expression
+
+   72 variable: IDF
+   73         | variable POINT IDF
+   74         | var_tab
+
+   75 var_tab: variable CROO val_tab CROF
+
+   76 val_tab: val_tab VIRGULE ea1
+   77        | ea1
+
+   78 expression: ea1
+   79           | eb1
+
+   80 $@15: %empty
+
+   81 ea1: ea1 $@15 PLUS ea2
+
+   82 $@16: %empty
+
+   83 ea1: ea1 $@16 MOINS ea2
+   84    | ea2
+
+   85 $@17: %empty
+
+   86 ea2: ea2 $@17 MULT ea3
+
+   87 $@18: %empty
+
+   88 ea2: ea2 $@18 DIV ea3
+   89    | ea3
+
+   90 ea3: PO ea1 PF
+   91    | variable
+   92    | appel
+   93    | ENTIER
+
+   94 eb1: eb1 ET eb2
+   95    | eb2
+
+   96 eb2: eb2 OU eb3
+   97    | eb3
+
+   98 eb3: EXCLA PO eb4 PF
+   99    | eb4
+
+  100 eb4: ea1 PETIT ea1
+  101    | ea1 GRAND ea1
+  102    | ea1 PETIT_EQ ea1
+  103    | ea1 GRAND_EQ ea1
+  104    | ea1 EGAL ea1
+  105    | ea1 DIFF ea1
+  106    | TRUE
+  107    | FALSE
+
+  108 lire: READ PO liste_variables PF
+
+  109 liste_variables: %empty
+  110                | variable
+  111                | liste_variables VIRGULE variable
+
+  112 ecrire: WRITE PO format suite_ecriture PF
+
+  113 suite_ecriture: %empty
+  114               | VIRGULE variable
+  115               | suite_ecriture VIRGULE variable
+
+  116 format: GUI liste_format GUI
+
+  117 liste_format: %empty
+  118             | FINT
+  119             | FBOOL
+  120             | FFLOAT
+  121             | FCHAR
+  122             | FSTRING
+  123             | liste_format FINT
+  124             | liste_format FBOOL
+  125             | liste_format FFLOAT
+  126             | liste_format FCHAR
+  127             | liste_format FSTRING
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    OPAFF (258) 71
+    EGAL (259) 104
+    PLUS (260) 81
+    MOINS (261) 83
+    MULT (262) 86
+    DIV (263) 88
+    ET (264) 94
+    OU (265) 96
+    EXCLA (266) 98
+    PO (267) 49 63 69 70 90 98 108 112
+    PF (268) 49 63 69 70 90 98 108 112
+    IF (269) 69
+    WHILE (270) 70
+    SWITCH (271)
+    FOR (272)
+    CASE (273)
+    VOID (274)
+    MAIN (275)
+    DEBUT (276) 7
+    FIN (277) 7
+    PROCEDURE (278) 44
+    FONCTION (279) 47
+    VIDE (280) 57
+    THEN (281) 69
+    APPEL (282)
+    ENDIF (283) 69
+    DO (284) 70
+    DEFINE (285)
+    STRUCT (286) 18
+    TYPE (287) 16
+    PROG (288) 2
+    FSTRUCT (289) 18
+    TABLEAU (290) 21
+    VARIABLE (291) 41
+    ELSE (292) 69
+    EXIT (293)
+    RETURN (294) 47 58
+    READ (295) 108
+    WRITE (296) 112
+    FINT (297) 118 123
+    FBOOL (298) 119 124
+    FFLOAT (299) 120 125
+    FCHAR (300) 121 126
+    FSTRING (301) 122 127
+    INCLUDE (302)
+    PETIT (303) 100
+    GRAND (304) 101
+    HASH (305)
+    VIRGULE (306) 26 67 76 111 114 115
+    PETIT_EQ (307) 102
+    GRAND_EQ (308) 103
+    PV (309) 5 6 9 10 18 31 51
+    TRUE (310) 106
+    FALSE (311) 107
+    DIFF (312) 105
+    ACO (313) 8
+    ACF (314) 8
+    CROO (315) 22 40 75
+    CROF (316) 22 40 75
+    GUI (317) 116
+    DE (318) 21
+    DEUX_POINTS (319) 16 33 41 52
+    POINT (320) 73
+    POINT_POINT (321) 29
+    INT (322) 36
+    FLOAT (323) 37
+    CHAR (324) 39
+    BOOL (325) 38
+    STRING (326) 40
+    ENTIER <type2> (327) 40 93
+    IDF <type2> (328) 16 33 35 41 44 47 52 63 72 73
+
+
+Nonterminals, with rules where they appear
+
+    $accept (74)
+        on left: 0
+    programme <type1> (75)
+        on left: 2
+        on right: 0
+    $@1 (76)
+        on left: 1
+        on right: 2
+    corps <type1> (77)
+        on left: 3 4
+        on right: 2 44 47
+    liste_declarations <type1> (78)
+        on left: 5 6
+        on right: 3 6
+    liste_instructions <type1> (79)
+        on left: 7 8
+        on right: 3 4 69 70
+    suite_liste_inst <type1> (80)
+        on left: 9 10
+        on right: 7 8 10
+    declaration <type1> (81)
+        on left: 11 12 13 14
+        on right: 5 6
+    declaration_type <type1> (82)
+        on left: 16
+        on right: 11
+    $@2 (83)
+        on left: 15
+        on right: 16
+    suite_declaration_type <type1> (84)
+        on left: 18 21
+        on right: 16
+    $@3 (85)
+        on left: 17
+        on right: 18
+    $@4 (86)
+        on left: 19
+        on right: 21
+    $@5 (87)
+        on left: 20
+        on right: 21
+    dimension <type1> (88)
+        on left: 22
+        on right: 21
+    liste_dimensions <type1> (89)
+        on left: 24 26
+        on right: 22 26
+    $@6 (90)
+        on left: 23
+        on right: 24
+    $@7 (91)
+        on left: 25
+        on right: 26
+    une_dimension <type1> (92)
+        on left: 29
+        on right: 24 26
+    $@8 (93)
+        on left: 27
+        on right: 29
+    $@9 (94)
+        on left: 28
+        on right: 29
+    liste_champs <type1> (95)
+        on left: 30 31
+        on right: 18 31
+    un_champ <type1> (96)
+        on left: 33
+        on right: 30 31
+    $@10 (97)
+        on left: 32
+        on right: 33
+    nom_type <type1> (98)
+        on left: 34 35
+        on right: 21 33 41
+    type_simple <type1> (99)
+        on left: 36 37 38 39 40
+        on right: 34 47 52
+    declaration_variable <type1> (100)
+        on left: 41
+        on right: 12
+    declaration_procedure <type1> (101)
+        on left: 44
+        on right: 13
+    $@11 (102)
+        on left: 42
+        on right: 44
+    $@12 (103)
+        on left: 43
+        on right: 44
+    declaration_fonction <type1> (104)
+        on left: 47
+        on right: 14
+    $@13 (105)
+        on left: 45
+        on right: 47
+    $@14 (106)
+        on left: 46
+        on right: 47
+    liste_parametres <type1> (107)
+        on left: 48 49
+        on right: 44 47
+    liste_param <type1> (108)
+        on left: 50 51
+        on right: 49 51
+    un_param <type1> (109)
+        on left: 52
+        on right: 50 51
+    instruction <type1> (110)
+        on left: 53 54 55 56 57 58 59 60
+        on right: 9 10
+    resultat_retourne <type2> (111)
+        on left: 61 62
+        on right: 58
+    appel <type1> (112)
+        on left: 63
+        on right: 56 92
+    liste_arguments <type1> (113)
+        on left: 64 65
+        on right: 63
+    liste_args <type1> (114)
+        on left: 66 67
+        on right: 65 67
+    un_arg <type1> (115)
+        on left: 68
+        on right: 66 67
+    condition <type1> (116)
+        on left: 69
+        on right: 54
+    tant_que <type1> (117)
+        on left: 70
+        on right: 55
+    affectation <type1> (118)
+        on left: 71
+        on right: 53
+    variable <type1> (119)
+        on left: 72 73 74
+        on right: 71 73 75 91 110 111 114 115
+    var_tab <type1> (120)
+        on left: 75
+        on right: 74
+    val_tab <type1> (121)
+        on left: 76 77
+        on right: 75 76
+    expression <type1> (122)
+        on left: 78 79
+        on right: 29 62 68 71
+    ea1 <type1> (123)
+        on left: 81 83 84
+        on right: 76 77 78 81 83 90 100 101 102 103 104 105
+    $@15 (124)
+        on left: 80
+        on right: 81
+    $@16 (125)
+        on left: 82
+        on right: 83
+    ea2 <type1> (126)
+        on left: 86 88 89
+        on right: 81 83 84 86 88
+    $@17 (127)
+        on left: 85
+        on right: 86
+    $@18 (128)
+        on left: 87
+        on right: 88
+    ea3 <type1> (129)
+        on left: 90 91 92 93
+        on right: 86 88 89
+    eb1 <type1> (130)
+        on left: 94 95
+        on right: 69 70 79 94
+    eb2 <type1> (131)
+        on left: 96 97
+        on right: 94 95 96
+    eb3 <type1> (132)
+        on left: 98 99
+        on right: 96 97
+    eb4 <type1> (133)
+        on left: 100 101 102 103 104 105 106 107
+        on right: 98 99
+    lire <type1> (134)
+        on left: 108
+        on right: 59
+    liste_variables <type1> (135)
+        on left: 109 110 111
+        on right: 108 111
+    ecrire <type1> (136)
+        on left: 112
+        on right: 60
+    suite_ecriture <type1> (137)
+        on left: 113 114 115
+        on right: 112 115
+    format <type1> (138)
+        on left: 116
+        on right: 112
+    liste_format <type1> (139)
+        on left: 117 118 119 120 121 122 123 124 125 126 127
+        on right: 116 123 124 125 126 127
+
+
+State 0
+
+    0 $accept: . programme $end
+
+    PROG  shift, and go to state 1
+
+    programme  go to state 2
+
+
+State 1
+
+    2 programme: PROG . $@1 corps
+
+    $default  reduce using rule 1 ($@1)
+
+    $@1  go to state 3
+
+
+State 2
+
+    0 $accept: programme . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    2 programme: PROG $@1 . corps
+
+    DEBUT      shift, and go to state 5
+    PROCEDURE  shift, and go to state 6
+    FONCTION   shift, and go to state 7
+    TYPE       shift, and go to state 8
+    VARIABLE   shift, and go to state 9
+    ACO        shift, and go to state 10
+
+    corps                  go to state 11
+    liste_declarations     go to state 12
+    liste_instructions     go to state 13
+    declaration            go to state 14
+    declaration_type       go to state 15
+    declaration_variable   go to state 16
+    declaration_procedure  go to state 17
+    declaration_fonction   go to state 18
+
+
+State 4
+
+    0 $accept: programme $end .
+
+    $default  accept
+
+
+State 5
+
+    7 liste_instructions: DEBUT . suite_liste_inst FIN
+
+    IF      shift, and go to state 19
+    WHILE   shift, and go to state 20
+    VIDE    shift, and go to state 21
+    RETURN  shift, and go to state 22
+    READ    shift, and go to state 23
+    WRITE   shift, and go to state 24
+    IDF     shift, and go to state 25
+
+    suite_liste_inst  go to state 26
+    instruction       go to state 27
+    appel             go to state 28
+    condition         go to state 29
+    tant_que          go to state 30
+    affectation       go to state 31
+    variable          go to state 32
+    var_tab           go to state 33
+    lire              go to state 34
+    ecrire            go to state 35
+
+
+State 6
+
+   44 declaration_procedure: PROCEDURE . IDF $@11 liste_parametres $@12 corps
+
+    IDF  shift, and go to state 36
+
+
+State 7
+
+   47 declaration_fonction: FONCTION . IDF $@13 liste_parametres RETURN type_simple $@14 corps
+
+    IDF  shift, and go to state 37
+
+
+State 8
+
+   16 declaration_type: TYPE . IDF $@2 DEUX_POINTS suite_declaration_type
+
+    IDF  shift, and go to state 38
+
+
+State 9
+
+   41 declaration_variable: VARIABLE . IDF DEUX_POINTS nom_type
+
+    IDF  shift, and go to state 39
+
+
+State 10
+
+    8 liste_instructions: ACO . suite_liste_inst ACF
+
+    IF      shift, and go to state 19
+    WHILE   shift, and go to state 20
+    VIDE    shift, and go to state 21
+    RETURN  shift, and go to state 22
+    READ    shift, and go to state 23
+    WRITE   shift, and go to state 24
+    IDF     shift, and go to state 25
+
+    suite_liste_inst  go to state 40
+    instruction       go to state 27
+    appel             go to state 28
+    condition         go to state 29
+    tant_que          go to state 30
+    affectation       go to state 31
+    variable          go to state 32
+    var_tab           go to state 33
+    lire              go to state 34
+    ecrire            go to state 35
+
+
+State 11
+
+    2 programme: PROG $@1 corps .
+
+    $default  reduce using rule 2 (programme)
+
+
+State 12
+
+    3 corps: liste_declarations . liste_instructions
+    6 liste_declarations: liste_declarations . declaration PV
+
+    DEBUT      shift, and go to state 5
+    PROCEDURE  shift, and go to state 6
+    FONCTION   shift, and go to state 7
+    TYPE       shift, and go to state 8
+    VARIABLE   shift, and go to state 9
+    ACO        shift, and go to state 10
+
+    liste_instructions     go to state 41
+    declaration            go to state 42
+    declaration_type       go to state 15
+    declaration_variable   go to state 16
+    declaration_procedure  go to state 17
+    declaration_fonction   go to state 18
+
+
+State 13
+
+    4 corps: liste_instructions .
+
+    $default  reduce using rule 4 (corps)
+
+
+State 14
+
+    5 liste_declarations: declaration . PV
+
+    PV  shift, and go to state 43
+
+
+State 15
+
+   11 declaration: declaration_type .
+
+    $default  reduce using rule 11 (declaration)
+
+
+State 16
+
+   12 declaration: declaration_variable .
+
+    $default  reduce using rule 12 (declaration)
+
+
+State 17
+
+   13 declaration: declaration_procedure .
+
+    $default  reduce using rule 13 (declaration)
+
+
+State 18
+
+   14 declaration: declaration_fonction .
+
+    $default  reduce using rule 14 (declaration)
+
+
+State 19
+
+   69 condition: IF . PO eb1 PF THEN liste_instructions ELSE liste_instructions ENDIF
+
+    PO  shift, and go to state 44
+
+
+State 20
+
+   70 tant_que: WHILE . PO eb1 PF DO liste_instructions
+
+    PO  shift, and go to state 45
+
+
+State 21
+
+   57 instruction: VIDE .
+
+    $default  reduce using rule 57 (instruction)
+
+
+State 22
+
+   58 instruction: RETURN . resultat_retourne
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    $default  reduce using rule 61 (resultat_retourne)
+
+    resultat_retourne  go to state 51
+    appel              go to state 52
+    variable           go to state 53
+    var_tab            go to state 33
+    expression         go to state 54
+    ea1                go to state 55
+    ea2                go to state 56
+    ea3                go to state 57
+    eb1                go to state 58
+    eb2                go to state 59
+    eb3                go to state 60
+    eb4                go to state 61
+
+
+State 23
+
+  108 lire: READ . PO liste_variables PF
+
+    PO  shift, and go to state 62
+
+
+State 24
+
+  112 ecrire: WRITE . PO format suite_ecriture PF
+
+    PO  shift, and go to state 63
+
+
+State 25
+
+   63 appel: IDF . PO liste_arguments PF
+   72 variable: IDF .
+
+    PO  shift, and go to state 64
+
+    $default  reduce using rule 72 (variable)
+
+
+State 26
+
+    7 liste_instructions: DEBUT suite_liste_inst . FIN
+   10 suite_liste_inst: suite_liste_inst . instruction PV
+
+    IF      shift, and go to state 19
+    WHILE   shift, and go to state 20
+    FIN     shift, and go to state 65
+    VIDE    shift, and go to state 21
+    RETURN  shift, and go to state 22
+    READ    shift, and go to state 23
+    WRITE   shift, and go to state 24
+    IDF     shift, and go to state 25
+
+    instruction  go to state 66
+    appel        go to state 28
+    condition    go to state 29
+    tant_que     go to state 30
+    affectation  go to state 31
+    variable     go to state 32
+    var_tab      go to state 33
+    lire         go to state 34
+    ecrire       go to state 35
+
+
+State 27
+
+    9 suite_liste_inst: instruction . PV
+
+    PV  shift, and go to state 67
+
+
+State 28
+
+   56 instruction: appel .
+
+    $default  reduce using rule 56 (instruction)
+
+
+State 29
+
+   54 instruction: condition .
+
+    $default  reduce using rule 54 (instruction)
+
+
+State 30
+
+   55 instruction: tant_que .
+
+    $default  reduce using rule 55 (instruction)
+
+
+State 31
+
+   53 instruction: affectation .
+
+    $default  reduce using rule 53 (instruction)
+
+
+State 32
+
+   71 affectation: variable . OPAFF expression
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+
+    OPAFF  shift, and go to state 68
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+
+State 33
+
+   74 variable: var_tab .
+
+    $default  reduce using rule 74 (variable)
+
+
+State 34
+
+   59 instruction: lire .
+
+    $default  reduce using rule 59 (instruction)
+
+
+State 35
+
+   60 instruction: ecrire .
+
+    $default  reduce using rule 60 (instruction)
+
+
+State 36
+
+   44 declaration_procedure: PROCEDURE IDF . $@11 liste_parametres $@12 corps
+
+    $default  reduce using rule 42 ($@11)
+
+    $@11  go to state 71
+
+
+State 37
+
+   47 declaration_fonction: FONCTION IDF . $@13 liste_parametres RETURN type_simple $@14 corps
+
+    $default  reduce using rule 45 ($@13)
+
+    $@13  go to state 72
+
+
+State 38
+
+   16 declaration_type: TYPE IDF . $@2 DEUX_POINTS suite_declaration_type
+
+    $default  reduce using rule 15 ($@2)
+
+    $@2  go to state 73
+
+
+State 39
+
+   41 declaration_variable: VARIABLE IDF . DEUX_POINTS nom_type
+
+    DEUX_POINTS  shift, and go to state 74
+
+
+State 40
+
+    8 liste_instructions: ACO suite_liste_inst . ACF
+   10 suite_liste_inst: suite_liste_inst . instruction PV
+
+    IF      shift, and go to state 19
+    WHILE   shift, and go to state 20
+    VIDE    shift, and go to state 21
+    RETURN  shift, and go to state 22
+    READ    shift, and go to state 23
+    WRITE   shift, and go to state 24
+    ACF     shift, and go to state 75
+    IDF     shift, and go to state 25
+
+    instruction  go to state 66
+    appel        go to state 28
+    condition    go to state 29
+    tant_que     go to state 30
+    affectation  go to state 31
+    variable     go to state 32
+    var_tab      go to state 33
+    lire         go to state 34
+    ecrire       go to state 35
+
+
+State 41
+
+    3 corps: liste_declarations liste_instructions .
+
+    $default  reduce using rule 3 (corps)
+
+
+State 42
+
+    6 liste_declarations: liste_declarations declaration . PV
+
+    PV  shift, and go to state 76
+
+
+State 43
+
+    5 liste_declarations: declaration PV .
+
+    $default  reduce using rule 5 (liste_declarations)
+
+
+State 44
+
+   69 condition: IF PO . eb1 PF THEN liste_instructions ELSE liste_instructions ENDIF
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 77
+    ea2       go to state 56
+    ea3       go to state 57
+    eb1       go to state 78
+    eb2       go to state 59
+    eb3       go to state 60
+    eb4       go to state 61
+
+
+State 45
+
+   70 tant_que: WHILE PO . eb1 PF DO liste_instructions
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 77
+    ea2       go to state 56
+    ea3       go to state 57
+    eb1       go to state 79
+    eb2       go to state 59
+    eb3       go to state 60
+    eb4       go to state 61
+
+
+State 46
+
+   98 eb3: EXCLA . PO eb4 PF
+
+    PO  shift, and go to state 80
+
+
+State 47
+
+   90 ea3: PO . ea1 PF
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 81
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 48
+
+  106 eb4: TRUE .
+
+    $default  reduce using rule 106 (eb4)
+
+
+State 49
+
+  107 eb4: FALSE .
+
+    $default  reduce using rule 107 (eb4)
+
+
+State 50
+
+   93 ea3: ENTIER .
+
+    $default  reduce using rule 93 (ea3)
+
+
+State 51
+
+   58 instruction: RETURN resultat_retourne .
+
+    $default  reduce using rule 58 (instruction)
+
+
+State 52
+
+   92 ea3: appel .
+
+    $default  reduce using rule 92 (ea3)
+
+
+State 53
+
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+   91 ea3: variable .
+
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+    $default  reduce using rule 91 (ea3)
+
+
+State 54
+
+   62 resultat_retourne: expression .
+
+    $default  reduce using rule 62 (resultat_retourne)
+
+
+State 55
+
+   78 expression: ea1 .
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  100 eb4: ea1 . PETIT ea1
+  101    | ea1 . GRAND ea1
+  102    | ea1 . PETIT_EQ ea1
+  103    | ea1 . GRAND_EQ ea1
+  104    | ea1 . EGAL ea1
+  105    | ea1 . DIFF ea1
+
+    EGAL      shift, and go to state 82
+    PETIT     shift, and go to state 83
+    GRAND     shift, and go to state 84
+    PETIT_EQ  shift, and go to state 85
+    GRAND_EQ  shift, and go to state 86
+    DIFF      shift, and go to state 87
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 78 (expression)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 56
+
+   84 ea1: ea2 .
+   86 ea2: ea2 . $@17 MULT ea3
+   88    | ea2 . $@18 DIV ea3
+
+    MULT      reduce using rule 85 ($@17)
+    DIV       reduce using rule 87 ($@18)
+    $default  reduce using rule 84 (ea1)
+
+    $@17  go to state 90
+    $@18  go to state 91
+
+
+State 57
+
+   89 ea2: ea3 .
+
+    $default  reduce using rule 89 (ea2)
+
+
+State 58
+
+   79 expression: eb1 .
+   94 eb1: eb1 . ET eb2
+
+    ET  shift, and go to state 92
+
+    $default  reduce using rule 79 (expression)
+
+
+State 59
+
+   95 eb1: eb2 .
+   96 eb2: eb2 . OU eb3
+
+    OU  shift, and go to state 93
+
+    $default  reduce using rule 95 (eb1)
+
+
+State 60
+
+   97 eb2: eb3 .
+
+    $default  reduce using rule 97 (eb2)
+
+
+State 61
+
+   99 eb3: eb4 .
+
+    $default  reduce using rule 99 (eb3)
+
+
+State 62
+
+  108 lire: READ PO . liste_variables PF
+
+    IDF  shift, and go to state 94
+
+    $default  reduce using rule 109 (liste_variables)
+
+    variable         go to state 95
+    var_tab          go to state 33
+    liste_variables  go to state 96
+
+
+State 63
+
+  112 ecrire: WRITE PO . format suite_ecriture PF
+
+    GUI  shift, and go to state 97
+
+    format  go to state 98
+
+
+State 64
+
+   63 appel: IDF PO . liste_arguments PF
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    $default  reduce using rule 64 (liste_arguments)
+
+    appel            go to state 52
+    liste_arguments  go to state 99
+    liste_args       go to state 100
+    un_arg           go to state 101
+    variable         go to state 53
+    var_tab          go to state 33
+    expression       go to state 102
+    ea1              go to state 55
+    ea2              go to state 56
+    ea3              go to state 57
+    eb1              go to state 58
+    eb2              go to state 59
+    eb3              go to state 60
+    eb4              go to state 61
+
+
+State 65
+
+    7 liste_instructions: DEBUT suite_liste_inst FIN .
+
+    $default  reduce using rule 7 (liste_instructions)
+
+
+State 66
+
+   10 suite_liste_inst: suite_liste_inst instruction . PV
+
+    PV  shift, and go to state 103
+
+
+State 67
+
+    9 suite_liste_inst: instruction PV .
+
+    $default  reduce using rule 9 (suite_liste_inst)
+
+
+State 68
+
+   71 affectation: variable OPAFF . expression
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel       go to state 52
+    variable    go to state 53
+    var_tab     go to state 33
+    expression  go to state 104
+    ea1         go to state 55
+    ea2         go to state 56
+    ea3         go to state 57
+    eb1         go to state 58
+    eb2         go to state 59
+    eb3         go to state 60
+    eb4         go to state 61
+
+
+State 69
+
+   75 var_tab: variable CROO . val_tab CROF
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    val_tab   go to state 105
+    ea1       go to state 106
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 70
+
+   73 variable: variable POINT . IDF
+
+    IDF  shift, and go to state 107
+
+
+State 71
+
+   44 declaration_procedure: PROCEDURE IDF $@11 . liste_parametres $@12 corps
+
+    PO  shift, and go to state 108
+
+    $default  reduce using rule 48 (liste_parametres)
+
+    liste_parametres  go to state 109
+
+
+State 72
+
+   47 declaration_fonction: FONCTION IDF $@13 . liste_parametres RETURN type_simple $@14 corps
+
+    PO  shift, and go to state 108
+
+    $default  reduce using rule 48 (liste_parametres)
+
+    liste_parametres  go to state 110
+
+
+State 73
+
+   16 declaration_type: TYPE IDF $@2 . DEUX_POINTS suite_declaration_type
+
+    DEUX_POINTS  shift, and go to state 111
+
+
+State 74
+
+   41 declaration_variable: VARIABLE IDF DEUX_POINTS . nom_type
+
+    INT     shift, and go to state 112
+    FLOAT   shift, and go to state 113
+    CHAR    shift, and go to state 114
+    BOOL    shift, and go to state 115
+    STRING  shift, and go to state 116
+    IDF     shift, and go to state 117
+
+    nom_type     go to state 118
+    type_simple  go to state 119
+
+
+State 75
+
+    8 liste_instructions: ACO suite_liste_inst ACF .
+
+    $default  reduce using rule 8 (liste_instructions)
+
+
+State 76
+
+    6 liste_declarations: liste_declarations declaration PV .
+
+    $default  reduce using rule 6 (liste_declarations)
+
+
+State 77
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  100 eb4: ea1 . PETIT ea1
+  101    | ea1 . GRAND ea1
+  102    | ea1 . PETIT_EQ ea1
+  103    | ea1 . GRAND_EQ ea1
+  104    | ea1 . EGAL ea1
+  105    | ea1 . DIFF ea1
+
+    EGAL      shift, and go to state 82
+    PETIT     shift, and go to state 83
+    GRAND     shift, and go to state 84
+    PETIT_EQ  shift, and go to state 85
+    GRAND_EQ  shift, and go to state 86
+    DIFF      shift, and go to state 87
+
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 80 ($@15)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 78
+
+   69 condition: IF PO eb1 . PF THEN liste_instructions ELSE liste_instructions ENDIF
+   94 eb1: eb1 . ET eb2
+
+    ET  shift, and go to state 92
+    PF  shift, and go to state 120
+
+
+State 79
+
+   70 tant_que: WHILE PO eb1 . PF DO liste_instructions
+   94 eb1: eb1 . ET eb2
+
+    ET  shift, and go to state 92
+    PF  shift, and go to state 121
+
+
+State 80
+
+   98 eb3: EXCLA PO . eb4 PF
+
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 77
+    ea2       go to state 56
+    ea3       go to state 57
+    eb4       go to state 122
+
+
+State 81
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+   90 ea3: PO ea1 . PF
+
+    PF  shift, and go to state 123
+
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 80 ($@15)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 82
+
+  104 eb4: ea1 EGAL . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 124
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 83
+
+  100 eb4: ea1 PETIT . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 125
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 84
+
+  101 eb4: ea1 GRAND . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 126
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 85
+
+  102 eb4: ea1 PETIT_EQ . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 127
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 86
+
+  103 eb4: ea1 GRAND_EQ . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 128
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 87
+
+  105 eb4: ea1 DIFF . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 129
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 88
+
+   81 ea1: ea1 $@15 . PLUS ea2
+
+    PLUS  shift, and go to state 130
+
+
+State 89
+
+   83 ea1: ea1 $@16 . MOINS ea2
+
+    MOINS  shift, and go to state 131
+
+
+State 90
+
+   86 ea2: ea2 $@17 . MULT ea3
+
+    MULT  shift, and go to state 132
+
+
+State 91
+
+   88 ea2: ea2 $@18 . DIV ea3
+
+    DIV  shift, and go to state 133
+
+
+State 92
+
+   94 eb1: eb1 ET . eb2
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 77
+    ea2       go to state 56
+    ea3       go to state 57
+    eb2       go to state 134
+    eb3       go to state 60
+    eb4       go to state 61
+
+
+State 93
+
+   96 eb2: eb2 OU . eb3
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 77
+    ea2       go to state 56
+    ea3       go to state 57
+    eb3       go to state 135
+    eb4       go to state 61
+
+
+State 94
+
+   72 variable: IDF .
+
+    $default  reduce using rule 72 (variable)
+
+
+State 95
+
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+  110 liste_variables: variable .
+
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+    $default  reduce using rule 110 (liste_variables)
+
+
+State 96
+
+  108 lire: READ PO liste_variables . PF
+  111 liste_variables: liste_variables . VIRGULE variable
+
+    PF       shift, and go to state 136
+    VIRGULE  shift, and go to state 137
+
+
+State 97
+
+  116 format: GUI . liste_format GUI
+
+    FINT     shift, and go to state 138
+    FBOOL    shift, and go to state 139
+    FFLOAT   shift, and go to state 140
+    FCHAR    shift, and go to state 141
+    FSTRING  shift, and go to state 142
+
+    FINT      [reduce using rule 117 (liste_format)]
+    FBOOL     [reduce using rule 117 (liste_format)]
+    FFLOAT    [reduce using rule 117 (liste_format)]
+    FCHAR     [reduce using rule 117 (liste_format)]
+    FSTRING   [reduce using rule 117 (liste_format)]
+    $default  reduce using rule 117 (liste_format)
+
+    liste_format  go to state 143
+
+
+State 98
+
+  112 ecrire: WRITE PO format . suite_ecriture PF
+
+    VIRGULE  shift, and go to state 144
+
+    VIRGULE   [reduce using rule 113 (suite_ecriture)]
+    $default  reduce using rule 113 (suite_ecriture)
+
+    suite_ecriture  go to state 145
+
+
+State 99
+
+   63 appel: IDF PO liste_arguments . PF
+
+    PF  shift, and go to state 146
+
+
+State 100
+
+   65 liste_arguments: liste_args .
+   67 liste_args: liste_args . VIRGULE un_arg
+
+    VIRGULE  shift, and go to state 147
+
+    $default  reduce using rule 65 (liste_arguments)
+
+
+State 101
+
+   66 liste_args: un_arg .
+
+    $default  reduce using rule 66 (liste_args)
+
+
+State 102
+
+   68 un_arg: expression .
+
+    $default  reduce using rule 68 (un_arg)
+
+
+State 103
+
+   10 suite_liste_inst: suite_liste_inst instruction PV .
+
+    $default  reduce using rule 10 (suite_liste_inst)
+
+
+State 104
+
+   71 affectation: variable OPAFF expression .
+
+    $default  reduce using rule 71 (affectation)
+
+
+State 105
+
+   75 var_tab: variable CROO val_tab . CROF
+   76 val_tab: val_tab . VIRGULE ea1
+
+    VIRGULE  shift, and go to state 148
+    CROF     shift, and go to state 149
+
+
+State 106
+
+   77 val_tab: ea1 .
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 77 (val_tab)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 107
+
+   73 variable: variable POINT IDF .
+
+    $default  reduce using rule 73 (variable)
+
+
+State 108
+
+   49 liste_parametres: PO . liste_param PF
+
+    IDF  shift, and go to state 150
+
+    liste_param  go to state 151
+    un_param     go to state 152
+
+
+State 109
+
+   44 declaration_procedure: PROCEDURE IDF $@11 liste_parametres . $@12 corps
+
+    $default  reduce using rule 43 ($@12)
+
+    $@12  go to state 153
+
+
+State 110
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres . RETURN type_simple $@14 corps
+
+    RETURN  shift, and go to state 154
+
+
+State 111
+
+   16 declaration_type: TYPE IDF $@2 DEUX_POINTS . suite_declaration_type
+
+    STRUCT  shift, and go to state 155
+
+    $default  reduce using rule 19 ($@4)
+
+    suite_declaration_type  go to state 156
+    $@4                     go to state 157
+
+
+State 112
+
+   36 type_simple: INT .
+
+    $default  reduce using rule 36 (type_simple)
+
+
+State 113
+
+   37 type_simple: FLOAT .
+
+    $default  reduce using rule 37 (type_simple)
+
+
+State 114
+
+   39 type_simple: CHAR .
+
+    $default  reduce using rule 39 (type_simple)
+
+
+State 115
+
+   38 type_simple: BOOL .
+
+    $default  reduce using rule 38 (type_simple)
+
+
+State 116
+
+   40 type_simple: STRING . CROO ENTIER CROF
+
+    CROO  shift, and go to state 158
+
+
+State 117
+
+   35 nom_type: IDF .
+
+    $default  reduce using rule 35 (nom_type)
+
+
+State 118
+
+   41 declaration_variable: VARIABLE IDF DEUX_POINTS nom_type .
+
+    $default  reduce using rule 41 (declaration_variable)
+
+
+State 119
+
+   34 nom_type: type_simple .
+
+    $default  reduce using rule 34 (nom_type)
+
+
+State 120
+
+   69 condition: IF PO eb1 PF . THEN liste_instructions ELSE liste_instructions ENDIF
+
+    THEN  shift, and go to state 159
+
+
+State 121
+
+   70 tant_que: WHILE PO eb1 PF . DO liste_instructions
+
+    DO  shift, and go to state 160
+
+
+State 122
+
+   98 eb3: EXCLA PO eb4 . PF
+
+    PF  shift, and go to state 161
+
+
+State 123
+
+   90 ea3: PO ea1 PF .
+
+    $default  reduce using rule 90 (ea3)
+
+
+State 124
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  104 eb4: ea1 EGAL ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 104 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 125
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  100 eb4: ea1 PETIT ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 100 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 126
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  101 eb4: ea1 GRAND ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 101 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 127
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  102 eb4: ea1 PETIT_EQ ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 102 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 128
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  103 eb4: ea1 GRAND_EQ ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 103 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 129
+
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+  105 eb4: ea1 DIFF ea1 .
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 105 (eb4)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 130
+
+   81 ea1: ea1 $@15 PLUS . ea2
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea2       go to state 162
+    ea3       go to state 57
+
+
+State 131
+
+   83 ea1: ea1 $@16 MOINS . ea2
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea2       go to state 163
+    ea3       go to state 57
+
+
+State 132
+
+   86 ea2: ea2 $@17 MULT . ea3
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea3       go to state 164
+
+
+State 133
+
+   88 ea2: ea2 $@18 DIV . ea3
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea3       go to state 165
+
+
+State 134
+
+   94 eb1: eb1 ET eb2 .
+   96 eb2: eb2 . OU eb3
+
+    OU  shift, and go to state 93
+
+    $default  reduce using rule 94 (eb1)
+
+
+State 135
+
+   96 eb2: eb2 OU eb3 .
+
+    $default  reduce using rule 96 (eb2)
+
+
+State 136
+
+  108 lire: READ PO liste_variables PF .
+
+    $default  reduce using rule 108 (lire)
+
+
+State 137
+
+  111 liste_variables: liste_variables VIRGULE . variable
+
+    IDF  shift, and go to state 94
+
+    variable  go to state 166
+    var_tab   go to state 33
+
+
+State 138
+
+  118 liste_format: FINT .
+
+    $default  reduce using rule 118 (liste_format)
+
+
+State 139
+
+  119 liste_format: FBOOL .
+
+    $default  reduce using rule 119 (liste_format)
+
+
+State 140
+
+  120 liste_format: FFLOAT .
+
+    $default  reduce using rule 120 (liste_format)
+
+
+State 141
+
+  121 liste_format: FCHAR .
+
+    $default  reduce using rule 121 (liste_format)
+
+
+State 142
+
+  122 liste_format: FSTRING .
+
+    $default  reduce using rule 122 (liste_format)
+
+
+State 143
+
+  116 format: GUI liste_format . GUI
+  123 liste_format: liste_format . FINT
+  124             | liste_format . FBOOL
+  125             | liste_format . FFLOAT
+  126             | liste_format . FCHAR
+  127             | liste_format . FSTRING
+
+    FINT     shift, and go to state 167
+    FBOOL    shift, and go to state 168
+    FFLOAT   shift, and go to state 169
+    FCHAR    shift, and go to state 170
+    FSTRING  shift, and go to state 171
+    GUI      shift, and go to state 172
+
+
+State 144
+
+  114 suite_ecriture: VIRGULE . variable
+
+    IDF  shift, and go to state 94
+
+    variable  go to state 173
+    var_tab   go to state 33
+
+
+State 145
+
+  112 ecrire: WRITE PO format suite_ecriture . PF
+  115 suite_ecriture: suite_ecriture . VIRGULE variable
+
+    PF       shift, and go to state 174
+    VIRGULE  shift, and go to state 175
+
+
+State 146
+
+   63 appel: IDF PO liste_arguments PF .
+
+    $default  reduce using rule 63 (appel)
+
+
+State 147
+
+   67 liste_args: liste_args VIRGULE . un_arg
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel       go to state 52
+    un_arg      go to state 176
+    variable    go to state 53
+    var_tab     go to state 33
+    expression  go to state 102
+    ea1         go to state 55
+    ea2         go to state 56
+    ea3         go to state 57
+    eb1         go to state 58
+    eb2         go to state 59
+    eb3         go to state 60
+    eb4         go to state 61
+
+
+State 148
+
+   76 val_tab: val_tab VIRGULE . ea1
+
+    PO      shift, and go to state 47
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel     go to state 52
+    variable  go to state 53
+    var_tab   go to state 33
+    ea1       go to state 177
+    ea2       go to state 56
+    ea3       go to state 57
+
+
+State 149
+
+   75 var_tab: variable CROO val_tab CROF .
+
+    $default  reduce using rule 75 (var_tab)
+
+
+State 150
+
+   52 un_param: IDF . DEUX_POINTS type_simple
+
+    DEUX_POINTS  shift, and go to state 178
+
+
+State 151
+
+   49 liste_parametres: PO liste_param . PF
+   51 liste_param: liste_param . PV un_param
+
+    PF  shift, and go to state 179
+    PV  shift, and go to state 180
+
+
+State 152
+
+   50 liste_param: un_param .
+
+    $default  reduce using rule 50 (liste_param)
+
+
+State 153
+
+   44 declaration_procedure: PROCEDURE IDF $@11 liste_parametres $@12 . corps
+
+    DEBUT      shift, and go to state 5
+    PROCEDURE  shift, and go to state 6
+    FONCTION   shift, and go to state 7
+    TYPE       shift, and go to state 8
+    VARIABLE   shift, and go to state 9
+    ACO        shift, and go to state 10
+
+    corps                  go to state 181
+    liste_declarations     go to state 12
+    liste_instructions     go to state 13
+    declaration            go to state 14
+    declaration_type       go to state 15
+    declaration_variable   go to state 16
+    declaration_procedure  go to state 17
+    declaration_fonction   go to state 18
+
+
+State 154
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres RETURN . type_simple $@14 corps
+
+    INT     shift, and go to state 112
+    FLOAT   shift, and go to state 113
+    CHAR    shift, and go to state 114
+    BOOL    shift, and go to state 115
+    STRING  shift, and go to state 116
+
+    type_simple  go to state 182
+
+
+State 155
+
+   18 suite_declaration_type: STRUCT . $@3 liste_champs PV FSTRUCT
+
+    $default  reduce using rule 17 ($@3)
+
+    $@3  go to state 183
+
+
+State 156
+
+   16 declaration_type: TYPE IDF $@2 DEUX_POINTS suite_declaration_type .
+
+    $default  reduce using rule 16 (declaration_type)
+
+
+State 157
+
+   21 suite_declaration_type: $@4 . TABLEAU $@5 dimension DE nom_type
+
+    TABLEAU  shift, and go to state 184
+
+
+State 158
+
+   40 type_simple: STRING CROO . ENTIER CROF
+
+    ENTIER  shift, and go to state 185
+
+
+State 159
+
+   69 condition: IF PO eb1 PF THEN . liste_instructions ELSE liste_instructions ENDIF
+
+    DEBUT  shift, and go to state 5
+    ACO    shift, and go to state 10
+
+    liste_instructions  go to state 186
+
+
+State 160
+
+   70 tant_que: WHILE PO eb1 PF DO . liste_instructions
+
+    DEBUT  shift, and go to state 5
+    ACO    shift, and go to state 10
+
+    liste_instructions  go to state 187
+
+
+State 161
+
+   98 eb3: EXCLA PO eb4 PF .
+
+    $default  reduce using rule 98 (eb3)
+
+
+State 162
+
+   81 ea1: ea1 $@15 PLUS ea2 .
+   86 ea2: ea2 . $@17 MULT ea3
+   88    | ea2 . $@18 DIV ea3
+
+    MULT      reduce using rule 85 ($@17)
+    DIV       reduce using rule 87 ($@18)
+    $default  reduce using rule 81 (ea1)
+
+    $@17  go to state 90
+    $@18  go to state 91
+
+
+State 163
+
+   83 ea1: ea1 $@16 MOINS ea2 .
+   86 ea2: ea2 . $@17 MULT ea3
+   88    | ea2 . $@18 DIV ea3
+
+    MULT      reduce using rule 85 ($@17)
+    DIV       reduce using rule 87 ($@18)
+    $default  reduce using rule 83 (ea1)
+
+    $@17  go to state 90
+    $@18  go to state 91
+
+
+State 164
+
+   86 ea2: ea2 $@17 MULT ea3 .
+
+    $default  reduce using rule 86 (ea2)
+
+
+State 165
+
+   88 ea2: ea2 $@18 DIV ea3 .
+
+    $default  reduce using rule 88 (ea2)
+
+
+State 166
+
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+  111 liste_variables: liste_variables VIRGULE variable .
+
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+    $default  reduce using rule 111 (liste_variables)
+
+
+State 167
+
+  123 liste_format: liste_format FINT .
+
+    $default  reduce using rule 123 (liste_format)
+
+
+State 168
+
+  124 liste_format: liste_format FBOOL .
+
+    $default  reduce using rule 124 (liste_format)
+
+
+State 169
+
+  125 liste_format: liste_format FFLOAT .
+
+    $default  reduce using rule 125 (liste_format)
+
+
+State 170
+
+  126 liste_format: liste_format FCHAR .
+
+    $default  reduce using rule 126 (liste_format)
+
+
+State 171
+
+  127 liste_format: liste_format FSTRING .
+
+    $default  reduce using rule 127 (liste_format)
+
+
+State 172
+
+  116 format: GUI liste_format GUI .
+
+    $default  reduce using rule 116 (format)
+
+
+State 173
+
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+  114 suite_ecriture: VIRGULE variable .
+
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+    $default  reduce using rule 114 (suite_ecriture)
+
+
+State 174
+
+  112 ecrire: WRITE PO format suite_ecriture PF .
+
+    $default  reduce using rule 112 (ecrire)
+
+
+State 175
+
+  115 suite_ecriture: suite_ecriture VIRGULE . variable
+
+    IDF  shift, and go to state 94
+
+    variable  go to state 188
+    var_tab   go to state 33
+
+
+State 176
+
+   67 liste_args: liste_args VIRGULE un_arg .
+
+    $default  reduce using rule 67 (liste_args)
+
+
+State 177
+
+   76 val_tab: val_tab VIRGULE ea1 .
+   81 ea1: ea1 . $@15 PLUS ea2
+   83    | ea1 . $@16 MOINS ea2
+
+    PLUS      reduce using rule 80 ($@15)
+    MOINS     reduce using rule 82 ($@16)
+    $default  reduce using rule 76 (val_tab)
+
+    $@15  go to state 88
+    $@16  go to state 89
+
+
+State 178
+
+   52 un_param: IDF DEUX_POINTS . type_simple
+
+    INT     shift, and go to state 112
+    FLOAT   shift, and go to state 113
+    CHAR    shift, and go to state 114
+    BOOL    shift, and go to state 115
+    STRING  shift, and go to state 116
+
+    type_simple  go to state 189
+
+
+State 179
+
+   49 liste_parametres: PO liste_param PF .
+
+    $default  reduce using rule 49 (liste_parametres)
+
+
+State 180
+
+   51 liste_param: liste_param PV . un_param
+
+    IDF  shift, and go to state 150
+
+    un_param  go to state 190
+
+
+State 181
+
+   44 declaration_procedure: PROCEDURE IDF $@11 liste_parametres $@12 corps .
+
+    $default  reduce using rule 44 (declaration_procedure)
+
+
+State 182
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres RETURN type_simple . $@14 corps
+
+    $default  reduce using rule 46 ($@14)
+
+    $@14  go to state 191
+
+
+State 183
+
+   18 suite_declaration_type: STRUCT $@3 . liste_champs PV FSTRUCT
+
+    IDF  shift, and go to state 192
+
+    liste_champs  go to state 193
+    un_champ      go to state 194
+
+
+State 184
+
+   21 suite_declaration_type: $@4 TABLEAU . $@5 dimension DE nom_type
+
+    $default  reduce using rule 20 ($@5)
+
+    $@5  go to state 195
+
+
+State 185
+
+   40 type_simple: STRING CROO ENTIER . CROF
+
+    CROF  shift, and go to state 196
+
+
+State 186
+
+   69 condition: IF PO eb1 PF THEN liste_instructions . ELSE liste_instructions ENDIF
+
+    ELSE  shift, and go to state 197
+
+
+State 187
+
+   70 tant_que: WHILE PO eb1 PF DO liste_instructions .
+
+    $default  reduce using rule 70 (tant_que)
+
+
+State 188
+
+   73 variable: variable . POINT IDF
+   75 var_tab: variable . CROO val_tab CROF
+  115 suite_ecriture: suite_ecriture VIRGULE variable .
+
+    CROO   shift, and go to state 69
+    POINT  shift, and go to state 70
+
+    $default  reduce using rule 115 (suite_ecriture)
+
+
+State 189
+
+   52 un_param: IDF DEUX_POINTS type_simple .
+
+    $default  reduce using rule 52 (un_param)
+
+
+State 190
+
+   51 liste_param: liste_param PV un_param .
+
+    $default  reduce using rule 51 (liste_param)
+
+
+State 191
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres RETURN type_simple $@14 . corps
+
+    DEBUT      shift, and go to state 5
+    PROCEDURE  shift, and go to state 6
+    FONCTION   shift, and go to state 7
+    TYPE       shift, and go to state 8
+    VARIABLE   shift, and go to state 9
+    ACO        shift, and go to state 10
+
+    corps                  go to state 198
+    liste_declarations     go to state 12
+    liste_instructions     go to state 13
+    declaration            go to state 14
+    declaration_type       go to state 15
+    declaration_variable   go to state 16
+    declaration_procedure  go to state 17
+    declaration_fonction   go to state 18
+
+
+State 192
+
+   33 un_champ: IDF . $@10 DEUX_POINTS nom_type
+
+    $default  reduce using rule 32 ($@10)
+
+    $@10  go to state 199
+
+
+State 193
+
+   18 suite_declaration_type: STRUCT $@3 liste_champs . PV FSTRUCT
+   31 liste_champs: liste_champs . PV un_champ
+
+    PV  shift, and go to state 200
+
+
+State 194
+
+   30 liste_champs: un_champ .
+
+    $default  reduce using rule 30 (liste_champs)
+
+
+State 195
+
+   21 suite_declaration_type: $@4 TABLEAU $@5 . dimension DE nom_type
+
+    CROO  shift, and go to state 201
+
+    dimension  go to state 202
+
+
+State 196
+
+   40 type_simple: STRING CROO ENTIER CROF .
+
+    $default  reduce using rule 40 (type_simple)
+
+
+State 197
+
+   69 condition: IF PO eb1 PF THEN liste_instructions ELSE . liste_instructions ENDIF
+
+    DEBUT  shift, and go to state 5
+    ACO    shift, and go to state 10
+
+    liste_instructions  go to state 203
+
+
+State 198
+
+   47 declaration_fonction: FONCTION IDF $@13 liste_parametres RETURN type_simple $@14 corps .
+
+    $default  reduce using rule 47 (declaration_fonction)
+
+
+State 199
+
+   33 un_champ: IDF $@10 . DEUX_POINTS nom_type
+
+    DEUX_POINTS  shift, and go to state 204
+
+
+State 200
+
+   18 suite_declaration_type: STRUCT $@3 liste_champs PV . FSTRUCT
+   31 liste_champs: liste_champs PV . un_champ
+
+    FSTRUCT  shift, and go to state 205
+    IDF      shift, and go to state 192
+
+    un_champ  go to state 206
+
+
+State 201
+
+   22 dimension: CROO . liste_dimensions CROF
+
+    $default  reduce using rule 23 ($@6)
+
+    liste_dimensions  go to state 207
+    $@6               go to state 208
+
+
+State 202
+
+   21 suite_declaration_type: $@4 TABLEAU $@5 dimension . DE nom_type
+
+    DE  shift, and go to state 209
+
+
+State 203
+
+   69 condition: IF PO eb1 PF THEN liste_instructions ELSE liste_instructions . ENDIF
+
+    ENDIF  shift, and go to state 210
+
+
+State 204
+
+   33 un_champ: IDF $@10 DEUX_POINTS . nom_type
+
+    INT     shift, and go to state 112
+    FLOAT   shift, and go to state 113
+    CHAR    shift, and go to state 114
+    BOOL    shift, and go to state 115
+    STRING  shift, and go to state 116
+    IDF     shift, and go to state 117
+
+    nom_type     go to state 211
+    type_simple  go to state 119
+
+
+State 205
+
+   18 suite_declaration_type: STRUCT $@3 liste_champs PV FSTRUCT .
+
+    $default  reduce using rule 18 (suite_declaration_type)
+
+
+State 206
+
+   31 liste_champs: liste_champs PV un_champ .
+
+    $default  reduce using rule 31 (liste_champs)
+
+
+State 207
+
+   22 dimension: CROO liste_dimensions . CROF
+   26 liste_dimensions: liste_dimensions . VIRGULE $@7 une_dimension
+
+    VIRGULE  shift, and go to state 212
+    CROF     shift, and go to state 213
+
+
+State 208
+
+   24 liste_dimensions: $@6 . une_dimension
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    une_dimension  go to state 214
+    appel          go to state 52
+    variable       go to state 53
+    var_tab        go to state 33
+    expression     go to state 215
+    ea1            go to state 55
+    ea2            go to state 56
+    ea3            go to state 57
+    eb1            go to state 58
+    eb2            go to state 59
+    eb3            go to state 60
+    eb4            go to state 61
+
+
+State 209
+
+   21 suite_declaration_type: $@4 TABLEAU $@5 dimension DE . nom_type
+
+    INT     shift, and go to state 112
+    FLOAT   shift, and go to state 113
+    CHAR    shift, and go to state 114
+    BOOL    shift, and go to state 115
+    STRING  shift, and go to state 116
+    IDF     shift, and go to state 117
+
+    nom_type     go to state 216
+    type_simple  go to state 119
+
+
+State 210
+
+   69 condition: IF PO eb1 PF THEN liste_instructions ELSE liste_instructions ENDIF .
+
+    $default  reduce using rule 69 (condition)
+
+
+State 211
+
+   33 un_champ: IDF $@10 DEUX_POINTS nom_type .
+
+    $default  reduce using rule 33 (un_champ)
+
+
+State 212
+
+   26 liste_dimensions: liste_dimensions VIRGULE . $@7 une_dimension
+
+    $default  reduce using rule 25 ($@7)
+
+    $@7  go to state 217
+
+
+State 213
+
+   22 dimension: CROO liste_dimensions CROF .
+
+    $default  reduce using rule 22 (dimension)
+
+
+State 214
+
+   24 liste_dimensions: $@6 une_dimension .
+
+    $default  reduce using rule 24 (liste_dimensions)
+
+
+State 215
+
+   29 une_dimension: expression . $@8 POINT_POINT expression $@9
+
+    $default  reduce using rule 27 ($@8)
+
+    $@8  go to state 218
+
+
+State 216
+
+   21 suite_declaration_type: $@4 TABLEAU $@5 dimension DE nom_type .
+
+    $default  reduce using rule 21 (suite_declaration_type)
+
+
+State 217
+
+   26 liste_dimensions: liste_dimensions VIRGULE $@7 . une_dimension
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    une_dimension  go to state 219
+    appel          go to state 52
+    variable       go to state 53
+    var_tab        go to state 33
+    expression     go to state 215
+    ea1            go to state 55
+    ea2            go to state 56
+    ea3            go to state 57
+    eb1            go to state 58
+    eb2            go to state 59
+    eb3            go to state 60
+    eb4            go to state 61
+
+
+State 218
+
+   29 une_dimension: expression $@8 . POINT_POINT expression $@9
+
+    POINT_POINT  shift, and go to state 220
+
+
+State 219
+
+   26 liste_dimensions: liste_dimensions VIRGULE $@7 une_dimension .
+
+    $default  reduce using rule 26 (liste_dimensions)
+
+
+State 220
+
+   29 une_dimension: expression $@8 POINT_POINT . expression $@9
+
+    EXCLA   shift, and go to state 46
+    PO      shift, and go to state 47
+    TRUE    shift, and go to state 48
+    FALSE   shift, and go to state 49
+    ENTIER  shift, and go to state 50
+    IDF     shift, and go to state 25
+
+    appel       go to state 52
+    variable    go to state 53
+    var_tab     go to state 33
+    expression  go to state 221
+    ea1         go to state 55
+    ea2         go to state 56
+    ea3         go to state 57
+    eb1         go to state 58
+    eb2         go to state 59
+    eb3         go to state 60
+    eb4         go to state 61
+
+
+State 221
+
+   29 une_dimension: expression $@8 POINT_POINT expression . $@9
+
+    $default  reduce using rule 28 ($@9)
+
+    $@9  go to state 222
+
+
+State 222
+
+   29 une_dimension: expression $@8 POINT_POINT expression $@9 .
+
+    $default  reduce using rule 29 (une_dimension)
