@@ -34,3 +34,4 @@ void RemplirPile(int pos, int valeur);
 int EvalueArbreBool(arbre a);
 int EvalueArbreFonc(arbre a);
 void viderBuffer();
+void Enregistrer_fichier();

@@ -447,3 +447,227 @@ void ExecuteArbre(arbre a){
     }
 }
 
+
+void afficher_fonction_fichier(arbre a, int profondeur,FILE * save ){
+
+    int i;
+
+    /* arbre vide ? */
+    if (a == NULL){
+        return;
+    }
+  
+    /* Augmente la distance entre les noeuds */
+   // profondeur += 5;
+    
+    /* Affiche le noeuds avec avec les espaces */
+    /* On compte */
+    for (i = 0; i < profondeur; i++){
+        fprintf(save," ");
+    }
+    switch (a->nature)
+    {
+        case A_IDF : fprintf(save,"A_IDF") ; break ;
+        case A_ENTIER : fprintf(save,"A_ENTIER") ; break ;
+        case A_AFFECT : fprintf(save,"A_AFFECT") ; break ;
+        case A_PLUS : fprintf(save,"A_PLUS") ; break ;
+        case A_MOINS : fprintf(save,"A_MOINS") ; break ;
+        case A_MULT : fprintf(save,"A_MULT") ; break ;
+        case A_DIV : fprintf(save,"A_DIV") ; break ;
+        case A_CNST_ENT : fprintf(save,"A_CNST_ENT") ; break ;
+        case A_CNST_REE : fprintf(save,"A_CNST_REE") ; break ;
+        case A_CNST_CH : fprintf(save,"A_CNST_CH") ; break ;
+        case A_OPBIN : fprintf(save,"A_OPBIN") ; break ;
+        case A_AFFECTATION : fprintf(save,"A_AFFECTATION") ; break ;
+        case A_INSTR_COND : fprintf(save,"A_INSTR_COND") ; break ;
+        case A_TANT_QUE : fprintf(save,"A_TANT_QUE") ; break ;
+        case A_APPEL : fprintf(save,"A_APPEL") ; break ;
+        case A_LISTE_INSTR : fprintf(save,"A_LISTE_INSTR") ; break ;
+        case A_VIDE : fprintf(save,"A_VIDE") ; break ;
+        case A_RETURN : fprintf(save,"A_RETURN") ; break ;
+        case A_LIRE : fprintf(save,"A_LIRE") ; break ;
+        case A_ECRIRE : fprintf(save,"A_ECRIRE") ; break ;
+        case A_ET : fprintf(save,"A_ET") ; break ;
+        case A_OU : fprintf(save,"A_OU") ; break ;
+        case A_NON : fprintf(save,"A_NON") ; break ;
+        case A_INF : fprintf(save,"A_INF") ; break ;
+        case A_SUP : fprintf(save,"A_SUP") ; break ;
+        case A_INF_EGAL : fprintf(save,"A_INF_EGAL") ; break ;
+        case A_SUP_EGAL : fprintf(save,"A_SUP_EGAL") ; break ;
+        case A_EGAL : fprintf(save,"A_EGAL") ; break ;
+        case A_DIFF : fprintf(save,"A_DIFF") ; break ;
+        case A_TRUE : fprintf(save,"A_TRUE") ; break ;
+        case A_FALSE : fprintf(save,"A_FALSE") ; break ;
+        case A_APPEL_PROC : fprintf(save,"A_APPEL_PROC") ; break ;
+        case A_APPEL_FONC : fprintf(save,"A_APPEL_FONC") ; break ;
+        case A_LISTE_ARG : fprintf(save,"A_LISTE_ARG") ; break ;
+        case A_POINT : fprintf(save,"A_POINT") ; break ;
+        case A_LISTE_VAR : fprintf(save,"A_LISTE_VAR") ; break ;
+        case A_LISTE_FORMAT : fprintf(save,"A_LISTE_FORMAT") ; break ;
+        case A_FORMAT_INT : fprintf(save,"A_FORMAT_INT") ; break ;
+        case A_FORMAT_BOOL : fprintf(save,"A_FORMAT_BOOL") ; break ;
+        case A_FORMAT_FLOAT : fprintf(save,"A_FORMAT_FLOAT") ; break ;
+        case A_FORMAT_CHAR : fprintf(save,"A_FORMAT_CHAR") ; break ;
+        case A_FORMAT_STRING : fprintf(save,"A_FORMAT_STRING") ; break ;
+        case A_SUITE_ECRITURE : fprintf(save,"A_SUITE_ECRITURE") ; break ;
+        case A_TABLEAU : fprintf(save,"A_TABLEAU") ; break ;
+        default : fprintf(save,"Je suis la et c'est pas normal"); break ;
+    }
+    fprintf(save,"[%d][%d]                   \n",a->carre1, a->carre2);
+  
+    /* Affiche fils gauche*/
+    afficher_fonction_fichier(a->filsGauche, profondeur+3, save);
+
+    /* Affiche frere droit */
+    afficher_fonction_fichier(a->frereDroit, profondeur, save);
+
+}
+
+
+
+void Enregistrer_fichier(){
+
+    FILE * save = fopen("save.txt", "w");
+    if( save == NULL){
+        printf(" erreur ouverture du fichier \n");
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(save, "\n*******************************************\n");
+    fprintf(save, "************* TABLE LEXICO ****************\n");
+    fprintf(save, "*******************************************\n\n");
+
+    fprintf(save, "   Taille     Lexeme    Suivant\n");
+    for (int i = 0; i < maTableLexico.compteur+1; i++){
+        fprintf(save, "   ------------------------------------\n");
+        fprintf(save, "%d        %d     %s    %d\n", i, maTableLexico.donnee[i].Long, maTableLexico.donnee[i].lexeme, maTableLexico.donnee[i].suivant);
+    }
+
+    fprintf(save, "\n*******************************************\n");
+    fprintf(save, "************* HASH TABLE ****************\n");
+    fprintf(save, "*******************************************\n\n");
+    for (int i = 0; i < 32; i++){
+        fprintf(save, "   ----------------------\n");
+        fprintf(save, "%d           %d\n", i, maTabHash[i]);
+    }
+    fprintf(save, "\n****************************************************************************\n");
+  fprintf(save, "************************ TABLE DECLARATIONS ********************************\n");
+  fprintf(save, "****************************************************************************\n\n");
+
+  fprintf(save, "   Nature     Suivant     Région     Description     Exécution\n");
+  for (int i = 0; i < maTableDecl.compteur+1; i++){
+    switch(maTableDecl.donnee[i].nature){
+      case 0:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_B", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 1:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_S", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 2:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_T", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 3:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "VAR", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 4:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "PARA", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 5:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "PROC", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 6:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "FONC", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      default:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %d         %d          %d            %d              %d\n", i, maTableDecl.donnee[i].nature, maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+    }
+  }
+  for (int i = 500; i < maTableDecl.compteurDebordement+1; i++){
+    switch(maTableDecl.donnee[i].nature){
+      case 0:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_B", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 1:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_S", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 2:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "TYPE_T", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 3:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "VAR", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 4:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "PARA", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 5:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "PROC", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      case 6:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %s         %d          %d            %d              %d\n", i, "FONC", maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+      default:
+        fprintf(save, "   ----------------------------------------------------------------------\n");
+        fprintf(save, "%d    %d         %d          %d            %d              %d\n", i, maTableDecl.donnee[i].nature, maTableDecl.donnee[i].suivant, maTableDecl.donnee[i].region, maTableDecl.donnee[i].description, maTableDecl.donnee[i].execution);
+        break;
+
+    }
+  }
+
+  fprintf(save, "\n*********************************************************************************\n");
+  fprintf(save, "**************************** TABLE TYPE ET ENTETE ********************************\n");
+  fprintf(save, "**********************************************************************************\n\n");
+
+  for(int i = 0; i < 70; i++){
+    fprintf(save, "[%d]", maTabType.donnee[i]);
+  }
+  fprintf(save, "\n");
+
+  fprintf(save, "\n*******************************************\n");
+  fprintf(save, "************* TABLE REGION ****************\n");
+  fprintf(save, "*******************************************\n\n");
+
+  fprintf(save, "   Taille     NIS          Arbre\n");
+  for (int i = 0; i < 20; i++){
+    fprintf(save, "   ------------------------------------\n");
+    fprintf(save, "%d      %d      %d            X\n", i, maTableRegion.donnee[i].taille, maTableRegion.donnee[i].NIS /*, maTableRegion.donnee[i].Arbre */);
+  }
+  fprintf(save, "\n");
+  fprintf(save, "\n*******************************************\n");
+  fprintf(save, "***************** ARBRES ******************\n");
+  fprintf(save, "*******************************************\n\n");
+  for (int i = 0; i < 20; i++){
+      fprintf(save, "**** ARBRE REGION [%d] ****\n\n", i);
+      afficher_fonction_fichier( maTableRegion.donnee[i].Arbre, 0,save );
+      fprintf(save, "\n\n");
+  }
+
+
+  fprintf(save, "\n*************************************************\n");
+    fprintf(save, "************* PILE A L'EXECUTION ****************\n");
+    fprintf(save, "***********************************************\n\n");
+    for(int i=500; i>=0; i--){
+        fprintf(save, "%d\t[%d]\n", i, maPile.donnee[i]);
+    }
+    printf("\n\n");
+
+    fclose(save);
+
+
+
+}

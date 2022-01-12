@@ -32,4 +32,4 @@ PileExec.o: PileExec.c PileExec.h arbre.h TabRegion.h TabDeclaration.h TabLexico
 	$(CC) -c PileExec.c
 
 clean :
-	rm -f y.output y.tab.c y.tab.h lex.yy.c lex.yy.o arbre.o TabLexico.o TabDeclaration.o TabType.o TabRegion.o PileExec.o exp
+	rm -f y.output y.tab.c y.tab.h lex.yy.c lex.yy.o arbre.o TabLexico.o TabDeclaration.o TabType.o TabRegion.o PileExec.o exp save.txt

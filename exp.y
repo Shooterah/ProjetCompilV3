@@ -137,10 +137,11 @@ A la fin : Affiche les tables
 programme : PROG {nbProcFonc = 0; empilerRegion(cptRegion());} corps 
             {
                 if(verbal){
-                    AfficheTableLexico(); AfficheTableHash(); afficheTabDecl(); afficheTabTypeEntete(); afficheTabRegion(); MachineVirtuel(); AffichePileExec();
+                    AfficheTableLexico(); AfficheTableHash(); afficheTabDecl(); afficheTabTypeEntete(); afficheTabRegion(); MachineVirtuel(); AffichePileExec();Enregistrer_fichier();
                 }
                 else{
                     MachineVirtuel();
+                    Enregistrer_fichier();
                 }
             }
           ;
