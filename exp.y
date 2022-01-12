@@ -386,6 +386,7 @@ declaration_procedure : PROCEDURE IDF
                             nbProcFonc++; 
                             insererTabDecl(5, $2, tailleStructTab, 0, nbProcFonc); 
                             empilerRegion(cptRegion());
+                            maTableRegion.donnee[numRegion()].taille += 1 + numNIS();
                         }                
                         liste_parametres {insererProcTabTypesEntete(nbParam, listeParam);} corps {decrementeNIS(); depilerRegion();}
                       ;
@@ -403,7 +404,14 @@ declaration_fonction : FONCTION IDF
                                 printf("Une Fonction du même nom [%s] est déja déclaré !\n", maTableLexico.donnee[$2].lexeme);
                                 exit(-1); 
                             }
-                            incrementeCptRegion(); incrementeNIS(); empilerRegion(cptRegion()); nbParam = 0; nbChamps = 0; nbProcFonc++; insererTabDecl(6, $2, tailleStructTab, 0, nbProcFonc);
+                            incrementeCptRegion(); 
+                            incrementeNIS(); 
+                            empilerRegion(cptRegion()); 
+                            nbParam = 0; 
+                            nbChamps = 0; 
+                            nbProcFonc++; 
+                            insererTabDecl(6, $2, tailleStructTab, 0, nbProcFonc);
+                            maTableRegion.donnee[numRegion()].taille += 1 + numNIS();
                        }
                        liste_parametres RETURN type_simple {insererFoncTabTypesEntete(tmpRetour, nbParam, listeParam);}
                        corps {decrementeNIS(); depilerRegion();}

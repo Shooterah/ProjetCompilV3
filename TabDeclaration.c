@@ -149,8 +149,8 @@ void afficheTabDecl(){
 /*****************************************************
 
 Fonction présence d'un léxeme dans la table Decl ?
-Si oui, renvois la dernière case suivant du lexeme
-Sinon renvois -1
+Si oui, 1
+Sinon renvois 0
 
 *****************************************************/
 
